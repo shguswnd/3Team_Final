@@ -1,0 +1,63 @@
+===================================================
+시퀀스 생성
+-- 예약 시퀀스 생성
+CREATE SEQUENCE reservation_seq INCREMENT BY 1 START WITH 1 MINVALUE 0 MAXVALUE 999999 CACHE 50 NOCYCLE NOORDER;
+
+-- 리뷰 시퀀스 생성
+CREATE SEQUENCE review_seq INCREMENT BY 1 START WITH 1 MINVALUE 0 MAXVALUE 999999 CACHE 50 NOCYCLE NOORDER;
+
+===================================================
+시퀀스 제거
+
+-- 예약 시퀀스 제거
+DROP SEQUENCE reservation_seq;
+
+-- 리뷰 시퀀스 제거
+DROP SEQUENCE review_seq;
+
+===================================================
+트리거 생성
+
+--시큐리티 권한 부여 트리거
+CREATE OR REPLACE TRIGGER insert_users
+AFTER INSERT ON USERS
+FOR EACH ROW
+BEGIN
+IF(:NEW.status = 0) THEN
+INSERT ALL
+INTO user_auth VALUES(:NEW.userid ,'ROLE_ADMIN')
+INTO user_auth VALUES(:NEW.userid ,'ROLE_USER')
+SELECT * FROM dual;
+ELSE
+INSERT INTO user_auth(userid, auth)
+VALUES(:NEW.userid ,'ROLE_USER');
+END IF;
+END;
+
+===================================================
+프로시저
+
+--삭제 프로시저 
+
+CREATE OR REPLACE PROCEDURE delete_review_data
+IS
+BEGIN
+  DELETE FROM review WHERE idx IN (
+    SELECT idx FROM review WHERE status = 0 OR parent IN (
+      SELECT idx FROM review WHERE status = 0
+    )
+  );
+END;
+
+--작업스케줄링 
+
+BEGIN
+  DBMS_SCHEDULER.CREATE_JOB (
+    job_name => 'delete_review_data_job',
+    job_type => 'STORED_PROCEDURE',
+    job_action => 'delete_review_data',
+    start_date => SYSTIMESTAMP,
+    repeat_interval => 'FREQ=DAILY; BYHOUR=0',
+    enabled => TRUE
+  );
+END;

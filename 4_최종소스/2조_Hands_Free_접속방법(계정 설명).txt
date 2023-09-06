@@ -1,0 +1,7 @@
+jdbc:log4jdbc:oracle:thin:@enjo2_high?TNS_ADMIN=/home/ubuntu/Wallet_ENJO2\
+
+@ip 林家 :54.250.19.196
+@port 锅龋 : 8080
+@DB id : admin@ENJO2_cloud
+@DB pwd : 1004
+@立加 林家 : http://54.250.19.196:8080/
