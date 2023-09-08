@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace = "dao.admin.schedulerDao">
+
+<select id="getReviewScheduler" resultType="vo.admin.AdminReview">
+			select A.idx as user_idx, A.rs_idx as reservation_idx, A.content as user_content, A.name as user_name, A.grade as user_grade, to_char(A.edate, 'YYYY-MM-DD') as user_date,
+       		   B.idx as store_idx, B.name as store_name, B.content as store_content, to_char(B.edate, 'YYYY-MM-DD') as store_date
+		from (select *
+      		  from review
+              where status = 0 and rs_idx in (select idx as rs_idx
+                       		   from reservation
+                       		   where storeid = #{storeId})
+        ) A
+		left join review B on A.idx = B.parent
+	</select>
+	
+	<select id="runStoredProcedure" statementType="CALLABLE">
+		{ call delete_review_data }
+	</select>
+	
+</mapper>

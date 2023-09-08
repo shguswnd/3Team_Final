@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "dao.user.PaymentDao">
+
+	<insert id="insertPayment" parameterType="vo.user.Payment">
+insert into reservation
+		(idx, userid, storeid, name, cnt, price, payment_method, payment_date, sdate, edate, status)
+		values(reservation_seq.NEXTVAL, #{userid}, #{storeid}, #{name}, #{cnt}, #{price}, #{payment_method}, #{payment_date},
+		#{sdate}, #{edate}, #{status})
+	</insert>	
+	
+	<select id="findStoreByStoreId" resultType="vo.admin.Store">
+		select storeid as storeId, name, phone, address
+		from store
+		where storeid = #{STOREID}
+	</select>
+		
+</mapper>

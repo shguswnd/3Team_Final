@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace= "dao.chat.ChatDao">
+	<!-- <insert id="insertChatRoom" parameterType="vo.chat.ChatRoom">
+		insert into chat_room(idx, status, sdate, last_subject, last_time)
+		values(#{idx}, #{status}, sysdate, #{last_subject}, sysdate)
+	</insert>
+	
+ 	<insert id="insertChatJoin" parameterType="vo.chat.ChatJoin">
+		insert into chat_join(userid, room_idx)
+		values(#{userId}, #{room_idx})
+	</insert>
+	
+	<insert id="insertChatMessage" parameterType="vo.chat.ChatMessage">
+		insert into chat_message(idx, userid, room_idx, content, sdate, read, type)
+		values(chat_message_seq.NEXTVAL, #{userId}, #{room_idx}, #{content}, #{sDate}, #{read}, #{type})
+	</insert>
+	
+	<select id="selectChat" resultMap="mapping_chatJoin">
+		select userid, room_idx from chat_join where userid = #{userId} 
+	</select>
+	
+	<resultMap type="vo.chat.ChatJoin" id="mapping_chatJoin">
+		<result property="room_idx" column="room_idx"/>
+	</resultMap> -->
+</mapper>

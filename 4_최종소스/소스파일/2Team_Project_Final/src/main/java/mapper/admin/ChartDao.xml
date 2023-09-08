@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.admin.ChartDao">
+	<!-- 월별 예약건수 가져오기 -->
+	<select id="getChartCount" resultType="vo.admin.Chart">
+	select
+	sum(m9) "m9", sum(m10) "m10", sum(m11) "m11", sum(m12) "m12", sum(m1) "m1",
+	sum(m2) "m2"
+	from
+	(
+	select decode(to_char(sdate, 'yyyy-mm'), '2022-09', count(*), 0) m9,
+	decode(to_char(sdate, 'yyyy-mm'), '2022-10', count(*), 0) m10,
+	decode(to_char(sdate, 'yyyy-mm'), '2022-11', count(*), 0) m11,
+	decode(to_char(sdate, 'yyyy-mm'), '2022-12', count(*), 0) m12,
+	decode(to_char(sdate, 'yyyy-mm'), '2023-01', count(*), 0) m1,
+	decode(to_char(sdate, 'yyyy-mm'), '2023-02', count(*), 0) m2
+	from reservation where storeid=#{storeid}
+	group by to_char(sdate, 'yyyy-mm')
+	)
+	</select>
+	
+	<!-- 월별 매출 가져오기 -->
+	<select id="getChartSales" resultType="vo.admin.Chart">
+	select
+	sum(s9) "s9", sum(s10) "s10", sum(s11) "s11", sum(s12) "s12", sum(s1) "s1",
+	sum(s2) "s2"
+	from
+	(
+	select decode(to_char(sdate, 'yyyy-mm'), '2022-09', sum(price), 0) s9,
+	decode(to_char(sdate, 'yyyy-mm'), '2022-10', sum(price), 0) s10,
+	decode(to_char(sdate, 'yyyy-mm'), '2022-11', sum(price), 0) s11,
+	decode(to_char(sdate, 'yyyy-mm'), '2022-12', sum(price), 0) s12,
+	decode(to_char(sdate, 'yyyy-mm'), '2023-01', sum(price), 0) s1,
+	decode(to_char(sdate, 'yyyy-mm'), '2023-02', sum(price), 0) s2
+	from reservation where storeid=#{storeid}
+	group by to_char(sdate, 'yyyy-mm')
+	) 
+	</select>
+</mapper>

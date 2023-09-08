@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.admin.ReservationDao">
+
+	<!-- <select id="getReservationCount" resultType="int"></select> -->
+
+	<!-- 예약 전체 불러오기 -->
+	<select id="getReservations" resultType="vo.Reservation">
+		SELECT IDX, PAYMENT_DATE AS PAYMENTDATE, SDATE, EDATE, CNT, NAME, USERID, PRICE 
+			FROM RESERVATION 
+			WHERE STATUS = 1 AND STOREID = (select userid from users where status = 0 and userid = #{userid}) 
+			ORDER BY IDX DESC
+	</select>
+
+	<!-- 단건 조회 예약 불러오기 -->
+	<select id="getReservation" resultType="vo.Reservation">
+		select userid from reservation where idx = #{idx}
+	</select>
+	
+	<!-- 점주 시간 -->
+	<select id="getManageTime" resultType="HashMap">
+		select manage_week_time, manage_sat_time, manage_sun_time from store_details 
+		where storeid = #{STOREID}
+	</select>
+	
+</mapper>

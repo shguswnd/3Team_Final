@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.admin.ReviewDao">
+
+	<!-- <select id="getCount" resultType="int"></select> -->
+
+	<select id="getReviews" resultType="vo.Review">
+		select u.name as userName, u.edate as userEdate, 
+			   u.grade as star, u.content as userContent 
+		from review u left join reservation r on u.rs_idx = r.idx 
+		where parent is null and r.status =1 and r.storeid=#{userid} order by useredate desc
+	</select>
+	
+	<select id="getReviewListUser" resultType="HashMap">
+		select v.name as userName, v.edate as userEdate, 
+			   v.grade as star, v.content as userContent 
+		from review v left join reservation r on v.rs_idx = r.idx 
+		where parent is null and r.status =1 and r.storeid=#{storeid} 
+		order by useredate desc
+	</select>
+	
+	<select id="getAllReviewList" resultType="HashMap">
+	    select v.idx, v.name as userName, v.edate as userEdate, v.parent, v.edate,
+			   v.grade as star, v.content as userContent 
+		from review v left join reservation r on v.rs_idx = r.idx 
+		where r.status =1 and r.storeid= #{storeid}
+		order by useredate asc
+	</select>
+
+
+</mapper>

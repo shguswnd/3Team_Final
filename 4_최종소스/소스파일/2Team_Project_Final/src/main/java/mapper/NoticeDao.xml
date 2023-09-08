@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- parameterMap : 비즈니스 로직으로부터 전달 받은, SQL 구문에 사용될 매개변수를 담은 객체
+parameterType : 비즈니스 로직으로부터 전달 받은, SQL 구문에 사용될 매개변수의 자료형
+resultMap : 비즈니스 로직으로 반환할, 결과값을 담은 객체
+resultType : 비즈니스 로직으로 반환할, 결과값의 자료형 
+
+
+마이바티스에서 사전에 등록된 키값을 가져와 증가시켜야될 경우 사용한다.
+order은 당연히 순서를 나타내고 before를 사용하면 쿼리문 실행전 selectKey부터 수행시키겠다는 의미이다.
+
+<selectKey order="BEFORE" keyProperty="seq" resultType="String">
+	select max(to_number(seq))+1 from notices
+</selectKey>
+-->
+
+<mapper namespace="dao.NoticeDao">
+
+	<select id="getCount" resultType="int">
+<!-- 		select count(*) from notices where ${} like '${}%' -->
+	</select>
+	
+	<select id="getNotices" resultType="vo.Notice">
+		select * from
+			( select rownum num, n.*
+			  from (
+			 		select *
+			 		from notices
+			 		where #{field} like '%${query}%' order by regdate desc
+			  	   ) N
+			) where num between 1 + (${page}-1)*5 and 5 + (${page}-1)*5
+	</select>
+	
+	<select id="getNotice" resultType="vo.Notice">
+		select seq, title, writer, content, regdate, hit, fileSrc
+		from notices
+		where seq=${seq}
+	</select>
+	
+	<delete id="delete">
+		delete from notices where seq=${seq}
+	</delete>
+	
+	<update id="update" parameterType="vo.Notice">
+		update notices
+		set title=${title},
+			content=${content},
+			filesrc=${fileSrc, jdbcType=varchar}
+		where seq=${seq}
+	</update>
+	
+	<insert id="insert" parameterType="vo.Notice">
+		insert into notices(seq, title , content, writer, regdate, hit , filesrc)
+		values(notice_idx.nextval, #{title} , #{content}, 'asd', sysdate, 0 , #{fileSrc})
+	</insert>
+	
+</mapper>

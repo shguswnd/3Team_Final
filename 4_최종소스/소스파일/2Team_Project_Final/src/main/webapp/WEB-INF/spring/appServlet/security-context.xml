@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<security:http auto-config="true">
+		<security:csrf disabled="true" />
+		<security:form-login 
+			login-page="/users/login"
+			authentication-failure-url="/users/login?error" 
+			authentication-success-handler-ref="customLoginSuccess"/>
+
+		<security:intercept-url pattern="/*" access="permitAll" />
+		<!-- <security:intercept-url pattern="/users/**" access="hasRole('ROLE_USER')" /> 
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" /> -->
+	</security:http>
+	
+	<bean id="customLoginSuccess" class="security.CustomLoginSuccessHandler"/>
+
+
+	<security:authentication-manager>
+		<security:authentication-provider><!-- 인증에 대한 제공자 -->
+			<security:jdbc-user-service
+				data-source-ref="driverManagerDataSource"
+				users-by-username-query="SELECT USERID, USERPWD AS PASSWORD, 1 enabled FROM users where userid=?"
+				authorities-by-username-query="select a.userid, a.auth
+											   from users u join user_auth a on u.userid = a.userid
+											   WHERE U.USERID = ?" />
+			<security:password-encoder ref="bCryptPasswordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>

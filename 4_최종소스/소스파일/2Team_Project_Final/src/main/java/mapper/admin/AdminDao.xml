@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "dao.admin.AdminDao">
+	<insert id="registerAdmin" parameterType="vo.admin.Admin">
+		insert into users(userid, userpwd, joindate, first_name, last_name, mail_accept, status, profile_path) 
+		values(#{userId}, #{password}, sysdate, #{firstName}, #{lastName}, #{mailReceptionStatus}, #{accountType}, #{profilePath})
+	</insert>
+	
+	<insert id="registerStoreKeeper" parameterType="vo.admin.StoreKeeper">
+		insert into storekeeper(storeid, status)
+		values(#{storeId}, 'OPEN')
+	</insert>
+	
+	<insert id="registerStore" parameterType="vo.admin.Store">
+		insert into store(storeid, name, phone, address, latitude, longitude)
+		values(#{storeId}, #{name}, #{phone}, #{address}, #{latitude}, #{longitude})
+	</insert>
+	
+	<insert id="registerStoreDetails" parameterType="vo.admin.StoreDetails">
+		insert into store_details(storeid, notice, status, way_to_find, manage_week_time, manage_sat_time, manage_sun_time, store_cnt, certificate_path) 
+		values(#{storeId}, '', 'START', '', '오전11:00~오후09:00', '오전11:00~오후09:00', '오전11:00~오후09:00', 0, #{certificatePath})
+	</insert>
+	
+	<select id="findAdminUserByUserId" resultType="vo.user.Users">
+		select userid, userpwd, enabled, to_char(joindate, 'YYYY/MM/DD HH24:MI'), first_name, last_name, mail_accept, status, profile_path as realFilePath
+		from users
+		where userid = #{userid}
+	</select>
+	
+	<select id="findStoreByStoreId" resultType="vo.admin.Store">
+		select storeid as storeId, name, phone, address, latitude, longitude
+		from store
+		where storeid = #{storeid}
+	</select>
+	
+	<select id="findStoreDetailsByStoreId" resultType="vo.admin.StoreDetails">
+		select storeid as storeId, notice, status, way_to_find as wayToFind, manage_week_time as manageWeekTime, manage_sat_time as manageSatTime, manage_sun_time as manageSunTime, store_cnt as storeCnt, certificate_path as certificatePath
+		from store_details
+		where storeid = #{storeid}
+	</select>
+
+	<update id="updateAdminProfile" parameterType="vo.user.Users">
+		update users
+		set profile_path = #{realFilePath}
+		where userid = #{userid}
+	</update>
+	
+	<update id="updateAdminPhone" parameterType="vo.admin.Store">
+		update store
+		set    phone = #{phone}
+		where  storeid = #{storeId}
+	</update>
+	
+	<update id="updateAdminDetail" parameterType="vo.admin.StoreDetails">
+		update store_details
+		set    notice = #{notice},
+			   manage_week_time = #{manageWeekTime},
+			   manage_sat_time = #{manageSatTime},
+			   manage_sun_time = #{manageSunTime},
+			   store_cnt = #{storeCnt}
+		where  storeid = #{storeId}
+	</update>
+
+	<select id="getCalendarListByUserId" resultType="vo.admin.CalendarInfo">
+		select concat(name, '님의 예약') as "title", 
+       		   concat(concat(to_char(sdate, 'YYYY-MM-DD'), 'T'), to_char(sdate, 'HH24:mm:ss')) as "start", 
+               concat(concat(to_char(edate, 'YYYY-MM-DD'), 'T'), to_char(edate, 'HH24:mm:ss')) as "end"
+		from reservation
+		where storeid = #{storeid}
+	</select>
+	
+	<select id="getAdminReviewListByStoreId" resultType="vo.admin.AdminReview">
+		select A.idx as user_idx, A.rs_idx as reservation_idx, A.content as user_content, A.name as user_name, A.grade as user_grade, to_char(A.edate, 'YYYY-MM-DD') as user_date,
+       		   B.idx as store_idx, B.name as store_name, B.content as store_content, to_char(B.edate, 'YYYY-MM-DD') as store_date
+		from (select *
+      		  from review
+              where rs_idx in (select idx as rs_idx
+                       		   from reservation
+                       		   where storeid = #{storeId})
+              and parent is null and status = 1
+        ) A
+		left join review B on A.idx = B.parent and B.status = 1
+		order by A.edate desc
+	</select>
+	
+	<insert id="saveAdminReview" parameterType="vo.admin.RealReview">
+		insert into review(idx, rs_idx, parent, content, grade, edate, status)
+		values(review_seq.nextval, #{reservationIdx}, #{parent}, #{content}, 0, sysdate, 1)
+	</insert>
+	
+	<update id="deleteAdminReview">
+		update review set status = 0 where idx = #{reviewIdx}
+	</update>
+	
+</mapper>

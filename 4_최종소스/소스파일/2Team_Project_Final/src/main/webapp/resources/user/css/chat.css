@@ -1,0 +1,388 @@
+@charset "UTF-8";
+
+/* 채팅방 목록 */
+ /*
+ #3B47F5
+ */
+ 
+/* 채팅방 안 */
+
+.chat {
+    width: 40vw;
+    height: 40vh;
+    position: absolute;
+    left: 100%;
+    top: 30%;
+    z-index: 10;
+    display: none;
+    /* transform: translate(0%, 0%); */
+}
+
+
+.adminChat {
+    width: 142%;
+    height: 70vh;
+    left: 20%;
+    top: 30%;
+    z-index: 10;
+     /* transform: translate(0%, 0%); */
+}
+
+.chat > div {
+	height: 100%;
+	display: flex;
+}
+
+
+.chat .chat_body {
+  	background: #fff;
+	height: 500px;
+	width: 300px;
+    order: 1;
+    position: relative;
+    border-radius: 15px;
+}
+
+.adminChat .chat_body {
+  	background: #fff;
+	height: 100%;
+	width: 70%;
+    order: 1;
+    border: 1px;
+    /* border: 1px solid #000; */
+    position: relative;
+    border-radius: 10px;
+}
+ 
+.chat h2 {
+    font-size: 1rem;
+    padding: 8px;
+    height: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    background: #eee;
+}
+
+.adminChat h2 {
+    font-size: 1rem;
+    height: 50px;
+    box-sizing: border-box;
+    text-align: center;
+    background: #eee;
+}
+
+.chat .chat_title{
+	background:  #3B47F5;
+	color: #fff;
+	font-size: 1rem;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	height: 40px
+}
+
+.adminChat .chat_title{
+	background:  #3B47F5;
+	color: #fff;
+	font-size: 1rem;
+}
+
+.chat .chat_back {
+    font-size: 1.5rem;
+    width: 80px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    cursor: pointer;
+    background:  #3B47F5;
+    color: #fff;
+    border-top-left-radius: 15px;
+    margin: 5px;
+    text-align: left;
+}
+
+.adminChat .chat_back {
+    font-size: 1rem;
+    width: 50px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    cursor: pointer;
+    background:  #3B47F5;
+    color: #fff;
+}
+ 
+.chat ul.chat_list {
+    overflow-y: auto;
+    height: calc(100% - 150px);
+    box-sizing: border-box;
+    padding: 5px 0;
+}
+
+.adminChat ul.chat_list {
+    overflow-y: auto;
+    height: 500px;
+    box-sizing: border-box;
+    padding: 5px 0;
+}
+ 
+.chat li {
+    /* font-size: 1.5rem; */
+}
+
+.adminChat li {
+    font-size: 1.5rem;
+} 
+
+.chat li > div {
+    padding: 10px;
+    display: flex;
+}
+
+.adminChat li > div {
+    padding: 10px;
+    display: flex;
+}
+ 
+.chat li .notification {
+	text-align: center;
+}
+
+.adminChat li .notification {
+	text-align: center;
+}
+ 
+.chat li .notification span {
+	margin: 0 auto;
+	border-radius: 15px;
+	padding: 5px 10px;
+	background: #ae9191;
+	color: #fff;
+}
+
+.adminChat li .notification span {
+	margin: 0 auto;
+	border-radius: 15px;
+	padding: 5px 10px;
+	background: #ae9191;
+	color: #fff;
+}
+ 
+.chat li > div .nickname {
+	/* padding: 3px;	 */
+}
+
+.adminChat li > div .nickname {
+	padding: 3px;	
+}
+ 
+.chat li > div .message {
+	display: flex; 
+	font-size: medium;
+}
+
+.adminChat li > div .message {
+	display: flex; 
+}
+ 
+.chat .chat_me {
+   justify-content: end;
+}
+
+.adminChat .chat_me {
+   justify-content: end;
+}
+ 
+.chat .chat_other {
+    justify-content: start;
+}
+
+.adminChat .chat_other {
+    justify-content: start;
+}
+ 
+.chat .chat_other .chat_in_time {
+    order: 1;
+}
+
+.adminChat .chat_other .chat_in_time {
+    order: 1;
+}
+ 
+.adminChat .chat_in_time {
+    font-size: 1.3rem;
+    margin: 0 5px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.adminChat .chat_in_time {
+    font-size: 1.3rem;
+    margin: 0 5px;
+    display: flex;
+    align-items: flex-end;
+}
+
+ 
+.chat .chat_content {
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 25%);
+    display: inline-block;
+    max-width: 80%;
+    max-height: 400px;
+    word-break: break-all;
+}
+
+.adminChat .chat_content {
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 25%);
+    display: inline-block;
+    max-width: 250px;
+    max-height: 400px;
+    word-break: break-all;
+}
+ 
+.chat .chat_me .chat_content {
+}
+ 
+.chat .chat_other .chat_content {
+    background: #fff;
+}
+
+.adminChat .chat_other .chat_content {
+    background: #fff;
+}
+
+ 
+.chat .chat_input {
+    height: 100px;
+    display: flex;
+    background: #fff;
+	border-top: 0.1rem solid rgb(233, 235, 237);
+    box-shadow: rgb(0 0 0 / 8%) 0px -0.0714286rem 0.857143rem;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.adminChat .chat_input {
+    height: 100px;
+    display: flex;
+    background: #fff;
+	border-top: 0.1rem solid rgb(233, 235, 237);
+    box-shadow: rgb(0 0 0 / 8%) 0px -0.0714286rem 0.857143rem;
+}
+ 
+.chat_input .chat_input_area {
+    width: 87%;
+}
+
+.adminChat .chat_input_area {
+    width: 87%;
+}
+
+ .chat_input .chat_input_area textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    resize: none;
+    padding: 8px;
+    box-sizing: border-box;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.chat_input .chat_input_area textarea:focus {
+    outline: none;
+}
+
+.chat_input .chat_button_area {
+    width: 13%;
+}
+ 
+.chat_input .chat_button_area button {
+    background: #3B47F5;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+    width: 90%;
+    margin-top: 10px;
+    cursor: pointer;
+    color:#fff;
+}
+ 
+.chat .chat_users {
+	border: 1px solid #ddd;
+	width: 30%;
+	height: 300px;
+/* 	position: absolute;
+	right: 101%;
+	top: 0; */
+    margin-right: 3px;
+}
+
+.adminChat .chat_users {
+	border: 1px solid #ddd;
+	width: 30%;
+	height: 300px;
+/* 	position: absolute;
+	right: 101%;
+	top: 0; */
+    margin-right: 3px;
+}
+ 
+/* 참가인원 */
+.chat .chat_users h2 {
+	font-size: 1.0rem;
+}
+
+.adminChat .chat_users h2 {
+	font-size: 1.0rem;
+}
+ 
+ 
+.chat .chat_users .chat_nickname {
+	font-size: 1.0rem;
+	height: calc(100% - 50px);
+	overflow: auto;
+}
+
+.adminChat .chat_users .chat_nickname {
+	font-size: 1.0rem;
+	height: calc(100% - 50px);
+	overflow: auto;
+}
+	
+.chat .chat_users .chat_nickname li {
+	padding: 5px;
+}
+ 
+.adminChat .chat_users .chat_nickname li {
+	padding: 5px;
+}
+/* 참가인원 */
+ 
+ 
+/* 채팅방 안 */
+ 
+ 
+ 
+@media(max-width: 1024px)  {
+	html {
+		font-size: 30%;
+	}
+	main {
+		width: 99vw;
+	}
+	
+	.chat {
+		width: 99vw;
+	}
+}
+
+
+
